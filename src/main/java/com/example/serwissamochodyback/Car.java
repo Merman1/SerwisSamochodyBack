@@ -23,7 +23,7 @@ public class Car {
     private String opis;
     private boolean dostepny;
     @Lob
-    @Column(name="obraz", columnDefinition="longblob")
+    @Column(name="obraz", columnDefinition="blob")
     private byte[] obraz; // Zmiana na typ byte[] dla przechowywania obrazu w bazie danych
 
     private String typ;
