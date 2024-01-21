@@ -1,6 +1,7 @@
 package com.example.serwissamochodyback;
 
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -63,11 +64,15 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
                         auth.requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/api/test/**").permitAll()
                                 .anyRequest().authenticated()
-                );
-
-        http.authenticationProvider(authenticationProvider());
-
-        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+                ).logout(logout -> logout
+                .logoutUrl("/api/auth/logout")
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .logoutSuccessHandler((request, response, authentication) -> {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.getWriter().flush();
+                }))
+                .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

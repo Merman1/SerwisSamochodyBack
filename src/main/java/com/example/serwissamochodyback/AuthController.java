@@ -58,7 +58,11 @@ public class AuthController {
                 userDetails.getEmail(),
                 roles));
     }
-
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout() {
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok(new MessageResponse("User logged out successfully!"));
+    }
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
@@ -72,6 +76,8 @@ public class AuthController {
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
+
+
 
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),

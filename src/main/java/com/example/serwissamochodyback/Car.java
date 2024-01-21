@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @Table(name = "car")
@@ -26,6 +27,8 @@ public class Car {
     @Column(name="obraz", columnDefinition="blob")
     private byte[] obraz; // Zmiana na typ byte[] dla przechowywania obrazu w bazie danych
 
+    @OneToMany(mappedBy = "car")
+    private List<PurchasedCar> purchasedCars;
     private String typ;
 
     private boolean klimatyzacja;

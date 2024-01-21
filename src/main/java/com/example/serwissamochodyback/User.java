@@ -1,6 +1,7 @@
 package com.example.serwissamochodyback;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -22,7 +23,8 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @OneToMany(mappedBy = "user")
+    private List<PurchasedCar> purchasedCars;
     @NotBlank
     @Size(max = 20)
     private String username;
@@ -50,6 +52,8 @@ public class User {
         this.email = email;
         this.password = password;
     }
+
+
 
     public Long getId() {
         return id;

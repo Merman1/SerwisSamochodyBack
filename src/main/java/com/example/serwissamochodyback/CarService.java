@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -11,10 +12,15 @@ import java.util.Random;
 public class CarService {
 
     private final CarRepo carRepo;
+    private final UserRepository userRepository;
+
+    private final PurchasedCarRepo purchasedCarRepo;
 
     @Autowired
-    public CarService(CarRepo carRepo) {
+    public CarService(CarRepo carRepo, UserRepository userRepository, PurchasedCarRepo purchasedCarRepo) {
         this.carRepo = carRepo;
+        this.userRepository = userRepository;
+        this.purchasedCarRepo = purchasedCarRepo;
     }
 
     public List<Car> getAllCars() {
@@ -56,19 +62,29 @@ public class CarService {
 
         return randomCars;
     }
-    public boolean buyCar(Long id) {
+    public boolean buyCar(Long id, Long userId) {
         Car carToBuy = carRepo.findById(id).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
 
-        if (carToBuy == null || !carToBuy.isDostepny()) {
-            // Samochód nie istnieje lub nie jest dostępny do zakupu
+        if (carToBuy == null || !carToBuy.isDostepny() || user == null) {
+            // Samochód nie istnieje, nie jest dostępny do zakupu, lub użytkownik nie istnieje
             return false;
         }
 
         // Tutaj można dodać logikę dodatkową, np. potwierdzenie płatności, itp.
 
         // Po udanej transakcji ustawiamy samochód jako niedostępny
-        carToBuy.setDostepny(false);
+        carToBuy.setDostepny(true);
         carRepo.save(carToBuy);
+
+        // Dodaj nowy rekord w tabeli PurchasedCar
+        PurchasedCar purchasedCar = new PurchasedCar();
+        purchasedCar.setCar(carToBuy);
+        purchasedCar.setUser(user);
+        purchasedCar.setPurchaseDate(new Date());
+        // Ustaw inne informacje, jeśli są dostępne
+
+        purchasedCarRepo.save(purchasedCar);
 
         return true;
     }
