@@ -12,7 +12,7 @@ import java.util.List;
 public class UserController {
     @GetMapping("/login")
     public String showLoginForm() {
-        return "login"; // Return the name of the login page template
+        return "login";
     }
 
 }

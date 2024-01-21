@@ -49,7 +49,7 @@ public class CarService {
     public List<Car> getRandomCars() {
         List<Car> allCars = carRepo.findAll();
         int totalCars = allCars.size();
-        int numberOfRandomCars = 5; // Adjust this based on your requirements
+        int numberOfRandomCars = 5;
 
         Random random = new Random();
         List<Car> randomCars = new ArrayList<>();
@@ -67,22 +67,15 @@ public class CarService {
         User user = userRepository.findById(userId).orElse(null);
 
         if (carToBuy == null || !carToBuy.isDostepny() || user == null) {
-            // Samochód nie istnieje, nie jest dostępny do zakupu, lub użytkownik nie istnieje
             return false;
         }
 
-        // Tutaj można dodać logikę dodatkową, np. potwierdzenie płatności, itp.
-
-        // Po udanej transakcji ustawiamy samochód jako niedostępny
         carToBuy.setDostepny(true);
         carRepo.save(carToBuy);
-
-        // Dodaj nowy rekord w tabeli PurchasedCar
         PurchasedCar purchasedCar = new PurchasedCar();
         purchasedCar.setCar(carToBuy);
         purchasedCar.setUser(user);
         purchasedCar.setPurchaseDate(new Date());
-        // Ustaw inne informacje, jeśli są dostępne
 
         purchasedCarRepo.save(purchasedCar);
 

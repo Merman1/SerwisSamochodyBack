@@ -33,7 +33,7 @@ public class JwtUtils {
                 .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .compact();
 
-        logger.info("Generated JWT token: {}", token); // Dodaj tę linię do logowania tokena
+        logger.info("Generated JWT token: {}", token);
         return token;
     }
 

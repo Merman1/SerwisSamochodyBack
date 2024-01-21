@@ -24,8 +24,8 @@ public class Car {
     private String opis;
     private boolean dostepny;
     @Lob
-    @Column(name="obraz", columnDefinition="blob")
-    private byte[] obraz; // Zmiana na typ byte[] dla przechowywania obrazu w bazie danych
+    @Column(name="obraz", columnDefinition="longblob")
+    private byte[] obraz;
 
     @OneToMany(mappedBy = "car")
     private List<PurchasedCar> purchasedCars;

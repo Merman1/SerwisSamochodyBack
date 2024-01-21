@@ -20,10 +20,6 @@ public class PurchasedCar {
     @Temporal(TemporalType.TIMESTAMP)
     private Date purchaseDate;
 
-    // inne pola, jeśli są potrzebne
-
-    // konstruktory, gettery, settery
-
     public PurchasedCar(Long id, Car car, User user, Date purchaseDate) {
         this.id = id;
         this.car = car;
